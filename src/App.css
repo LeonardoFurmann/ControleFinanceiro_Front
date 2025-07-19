@@ -1,5 +1,29 @@
 @import "tailwindcss";
 
+
+@theme {
+  /* Mint */
+  --color-mint-100: oklch(0.90 0.08 178);
+  --color-mint-300: oklch(0.80 0.10 178);
+  --color-mint-500: oklch(0.72 0.11 178);
+  --color-mint-700: oklch(0.60 0.12 178);
+  --color-mint-900: oklch(0.45 0.13 178);
+
+  /* Black */
+  --color-black-100: oklch(0.20 0.02 270); 
+  --color-black-300: oklch(0.15 0.01 270);
+  --color-black-500: oklch(0.10 0.01 270); 
+  --color-black-700: oklch(0.07 0.01 270);
+  --color-black-900: oklch(0.04 0.00 270);
+
+  /* White */
+  --color-white-100: oklch(0.98 0.01 270); 
+  --color-white-300: oklch(0.95 0.01 270); 
+  --color-white-500: oklch(0.92 0.01 270);
+  --color-white-700: oklch(0.88 0.01 270);
+  --color-white-900: oklch(0.85 0.01 270);
+}
+
 * {
     box-sizing: border-box;
   }
@@ -7,8 +31,7 @@
   h1,
   h2,
   h3,
-  h4,
-  p {
+  h4 {
     margin: 0px;
   }
   
