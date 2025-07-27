@@ -6,7 +6,7 @@ type Props = {}
 
 const Home = (props: Props) => {
   return (
-    <section className='h-screen bg-white-500 flex'>
+    <section className='h-screen bg-background flex'>
       <Login />
     </section>
   )
