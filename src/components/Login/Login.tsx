@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Button from '../../components/Button/Button'
 import Input from '../../components/Input/Input'
 import { Link } from 'react-router-dom'
@@ -6,19 +6,29 @@ import { Link } from 'react-router-dom'
 type Props = {}
 
 const Login = (props: Props) => {
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        console.log('Email:', email);
+        console.log('Senha:', password);
+    }
+
     return (
         <div className='bg-card shadow-lg w-full max-w-md m-auto rounded-xl'>
             <div className="flex min-h-full flex-1 flex-col justify-center px-3 py-3 lg:px-8">
                 <div className="flex items-center justify-center">
                     <img src="/pig.png" alt="Pig" className="h-44 w-44" />
-
                 </div>
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form action="#" method="POST" className="space-y-6">
-                        <Input name={'email'} type={'email'} value={''} placeholder='Email' />
-                        <Input name={'password'} type={'password'} value={''} placeholder='Senha' />
+                    <form action="" onSubmit={handleSubmit} className="space-y-6">
+                        <Input name='email' type='email' placeholder='Email' value={email} onChange={({ target }) => setEmail(target.value)} />
+                        <Input name='password' type='password' placeholder='Senha' max={8} value={password} onChange={({ target }) => setPassword(target.value)} />
                         <div>
-                            <Button text='Entrar' className='focus-visible:outline-mint-500  bg-mint-500 px-3 py-3 text-white 
+                            <Button text='Entrar' type='submit' className='focus-visible:outline-mint-500  bg-mint-500 px-3 py-3 text-white 
                             disabled:bg-gray-300 text-md font-semibold ' />
                         </div>
                     </form>

@@ -3,12 +3,13 @@ import React from 'react';
 type InputProps = {
     label?: string;
     name: string;
-    type: string;
+    type?: string;
     className?: string;
     value: string;
     onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     required?: boolean;
     placeholder?: string;
+    max?: number
 }
 
 const Input: React.FC<InputProps> = ({
@@ -20,6 +21,7 @@ const Input: React.FC<InputProps> = ({
     onChange,
     required = false,
     placeholder = '',
+    max
 }) => {
     return (
         <div>
@@ -38,6 +40,7 @@ const Input: React.FC<InputProps> = ({
                     required={required}
                     autoComplete={name}
                     placeholder={placeholder}
+                    maxLength={max}
                     className={`block w-full rounded-md bg-white-100 px-3 py-3 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-mint-500 sm:text-sm ${className}`}
                 />
             </div>
