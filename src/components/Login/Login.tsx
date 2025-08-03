@@ -2,16 +2,34 @@ import React, { useState } from 'react'
 import Button from '../../components/Button/Button'
 import Input from '../../components/Input/Input'
 import { Link } from 'react-router-dom'
+import { validate } from '../../utils/validate'
+import Error from '../Helper/Error'
 
 type Props = {}
 
 const Login = (props: Props) => {
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
 
-async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
+
+        const emailCheck = validate('email', email);
+        const passwordCheck = validate('password', password);
+
+        const newErrors: typeof errors = {};
+
+        if (!emailCheck.valid) newErrors.email = emailCheck.message;
+        if (!passwordCheck.valid) newErrors.password = passwordCheck.message;
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        setErrors({});
 
         console.log('Email:', email);
         console.log('Senha:', password);
@@ -24,9 +42,11 @@ async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
                     <img src="/pig.png" alt="Pig" className="h-44 w-44" />
                 </div>
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form action="" onSubmit={handleSubmit} className="space-y-6">
+                    <form action="" onSubmit={handleSubmit} className="space-y-4">
                         <Input name='email' type='email' placeholder='Email' value={email} onChange={({ target }) => setEmail(target.value)} />
+                        {errors.email && <Error error={errors.email} />}
                         <Input name='password' type='password' placeholder='Senha' max={8} value={password} onChange={({ target }) => setPassword(target.value)} />
+                        {errors.password && <Error error={errors.password} />}
                         <div>
                             <Button text='Entrar' type='submit' className='focus-visible:outline-mint-500  bg-mint-500 px-3 py-3 text-white 
                             disabled:bg-gray-300 text-md font-semibold ' />
