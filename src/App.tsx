@@ -1,7 +1,7 @@
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
 import Home from './pages/Home/Home';
-
 
 function App() {
 
@@ -9,9 +9,11 @@ function App() {
     <div>
       <BrowserRouter>
         <main>
-          <Routes>
-            <Route path='/' element={<Home />} />
-          </Routes>
+          <AuthProvider>
+            <Routes>
+              <Route path='/' element={<Home />} />
+            </Routes>
+          </AuthProvider>
         </main>
       </BrowserRouter>
     </div>

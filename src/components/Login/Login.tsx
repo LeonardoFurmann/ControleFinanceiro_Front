@@ -1,17 +1,21 @@
 import React, { useState } from 'react'
 import Button from '../../components/Button/Button'
 import Input from '../../components/Input/Input'
+import Error from '../Helper/Error'
 import { Link } from 'react-router-dom'
 import { validate } from '../../utils/validate'
-import Error from '../Helper/Error'
+import { useAuth } from '../../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom';
 
 type Props = {}
 
 const Login = (props: Props) => {
 
+    const { login } = useAuth();
+    const navigate = useNavigate();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+    const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -31,8 +35,14 @@ const Login = (props: Props) => {
 
         setErrors({});
 
-        console.log('Email:', email);
-        console.log('Senha:', password);
+        const result = await login(email, password);
+
+        if (!result.success) {
+            setErrors({ general: result.message });
+            return;
+        }
+
+        navigate('/dashboard');
     }
 
     return (
@@ -51,6 +61,7 @@ const Login = (props: Props) => {
                             <Button text='Entrar' type='submit' className='focus-visible:outline-mint-500  bg-mint-500 px-3 py-3 text-white 
                             disabled:bg-gray-300 text-md font-semibold ' />
                         </div>
+                        {errors.general && <Error error={errors.general} />}
                     </form>
                 </div>
                 <div className="my-6 border-t border-gray-300" />
