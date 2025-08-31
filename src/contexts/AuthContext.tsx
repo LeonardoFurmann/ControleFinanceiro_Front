@@ -29,11 +29,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function login(email: string, password: string): Promise<RequestResult> {
     try {
       const { data } = await authAPI.login(email, password);
-      setToken(data.token);
+      const token = data.token;
+      setToken(token);
+      window.localStorage.setItem('token', token);
       return { success: true };
     } catch (error) {
       const err = error as AxiosError<{ error?: string }>;
-      console.log(err);
       return {
         success: false,
         message: err.response?.data?.error || "Erro ao fazer login. Tente novamente.",
@@ -44,6 +45,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   function logout() {
     setUser(null);
     setToken(null);
+    window.localStorage.removeItem('token');
   }
 
   return (
