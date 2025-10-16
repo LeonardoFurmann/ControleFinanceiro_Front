@@ -6,9 +6,10 @@ type Props = {}
 
 const Dashboard = (props: Props) => {
     return (
-        <section>
-            <Header />
-
+        <section className="h-screen bg-background flex justify-center">
+            <div className="w-[1800px] flex flex-col items-center">
+                <Header />
+            </div>
         </section>
     )
 }

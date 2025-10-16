@@ -1,6 +1,8 @@
-import React, { createContext, useContext, useState, type ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
 import { authAPI } from '../services/api.ts'
+import { setAuthToken, clearAuthToken, getAuthToken } from '../services/authToken';
+
 import type { AxiosError } from 'axios';
 
 type User = {
@@ -26,12 +28,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
+   useEffect(() => {
+    const savedToken = getAuthToken();
+    if (savedToken) {
+      setToken(savedToken);
+    }
+  }, []);
+
   async function login(email: string, password: string): Promise<RequestResult> {
     try {
       const { data } = await authAPI.login(email, password);
       const token = data.token;
       setToken(token);
-      window.localStorage.setItem('token', token);
+      setAuthToken(token);
       return { success: true };
     } catch (error) {
       const err = error as AxiosError<{ error?: string }>;
@@ -45,7 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   function logout() {
     setUser(null);
     setToken(null);
-    window.localStorage.removeItem('token');
+    clearAuthToken()  
   }
 
   return (
