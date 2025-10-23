@@ -1,5 +1,5 @@
 const API_URL = 'http://localhost:5000';
-import { getAuthToken } from './authToken';
+import { getAuthToken, clearAuthToken } from './authToken';
 
 import axios from 'axios';
 
@@ -10,16 +10,24 @@ const api = axios.create({
   },
 });
 
-api.interceptors.request.use(
-  (config) => {
-    const token = getAuthToken();
-    console.log(token)
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+api.interceptors.request.use(config => {
+  const token = getAuthToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      clearAuthToken();
+      window.location.href = '/';
     }
-    return config;
-  },
-  (error) => Promise.reject(error)
+    return Promise.reject(error);
+  }
 );
 
 export const authAPI = {
