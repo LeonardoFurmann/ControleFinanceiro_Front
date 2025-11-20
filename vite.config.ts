@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import path from "path"
 import { VitePWA, type VitePWAOptions } from 'vite-plugin-pwa'
 
 const manifestForPlugin: Partial<VitePWAOptions> = {
@@ -39,4 +40,9 @@ export default defineConfig({
     react(),
     VitePWA(manifestForPlugin)
   ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
 })

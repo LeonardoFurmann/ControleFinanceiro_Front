@@ -4,8 +4,8 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import ProtectedRoute from "./components/Helper/ProtectedRoute";
-import Dashboard from "./components/Dashboard/Dashboard";
-import Calendar from "./components/Calendar/Calendar";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Calendar from "./pages/Calendar/CalendarPage";
 
 function App() {
   return (
