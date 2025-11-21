@@ -1,28 +1,26 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header/Header.tsx";
 import { useApiRequest } from "../../hooks/useApiResquest.ts";
-import { ChevronUp, ChevronDown, CalendarDays } from "lucide-react";
 import { transactionAPI } from "../../services/api.ts";
 import type { MonthData } from "../../types/MouthData.ts";
-import { Calendar } from "@/components/ui/calendar";
+import { MonthYearPicker } from "@/components/DatePicker/MonthYearPicker.tsx";
 
 type Props = {};
 
 const CalendarPage = (props: Props) => {
   const { execute } = useApiRequest();
 
-  const [month, setMonth] = useState();
-  const [year, setYear] = useState();
+  const today = new Date();
+  const [month, setMonth] = useState<number>(today.getMonth());
+  const [year, setYear] = useState<number>(today.getFullYear());
 
   const [amountIn, setAumoutIn] = useState(0);
   const [amountOut, setAumoutOut] = useState(0);
   const [total, setTotal] = useState(0);
 
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
-
   async function getMouthData() {
     const result = await execute<MonthData>(() =>
-      transactionAPI.month(2025, 7)
+      transactionAPI.month(year, month + 1)
     );
 
     if (result.success && result.data) {
@@ -36,7 +34,7 @@ const CalendarPage = (props: Props) => {
 
   useEffect(() => {
     getMouthData();
-  }, []);
+  }, [month, year]);
 
   return (
     <section className="h-screen bg-background flex justify-center">
@@ -44,22 +42,16 @@ const CalendarPage = (props: Props) => {
         <Header />
         <div className="w-full bg-card px-10 shadow-md rounded-b-sm my-1 flex items-center h-20">
           <div className="flex items-center w-[40%]">
-            <span className="text-gray-800 font-semibold text-3xl">
-              Agosto 2025
-            </span>
-            <div className="flex flex-col items-center ml-3">
-              <button className="hover:text-mint-500 hover:font-bold px-3 cursor-pointer">
-                <ChevronUp size={20} />
-              </button>
-              <button className="hover:text-mint-500 hover:font-bold cursor-pointer">
-                <ChevronDown size={20} />
-              </button>
-            </div>
-            <button className="ml-3 hover:text-mint-500 hover:font-bold cursor-pointer">
-                <CalendarDays size={28}/>
-            </button>
-            <div className="bg-background h-18 w-1 mx-5"></div>
+            <MonthYearPicker
+              month={month}
+              year={year}
+              onChange={(m, y) => {
+                setMonth(m);
+                setYear(y);
+              }}
+            />
           </div>
+          <div className="bg-background h-18 w-1 mx-5"></div>
 
           <div className="flex items-center justify-evenly w-[60%]">
             <div className="flex-1 flex flex-col items-center">
