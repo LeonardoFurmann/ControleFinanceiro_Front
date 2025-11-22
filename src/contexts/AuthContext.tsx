@@ -7,6 +7,7 @@ import  {
 import { authAPI } from "../services/api.ts";
 import { setAuthToken,clearAuthToken} from "../services/authToken";
 import type { AxiosError } from "axios";
+import { useNavigate } from 'react-router-dom';
 
 type User = {
   id: number;
@@ -27,6 +28,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
+
+  const navigate = useNavigate();
+
 
   async function login(
     email: string,
@@ -52,6 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     setToken(null);
     clearAuthToken();
+    navigate('/');
   }
 
   return (
