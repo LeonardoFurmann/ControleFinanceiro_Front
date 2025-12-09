@@ -15,13 +15,16 @@ import { Button } from "@/components/ui/button";
 import { MONTHS_ARRAY } from "../../enum/Months.ts";
 
 type MonthYearPickerProps = {
-  month: number;        // 0–11
-  year: number;         // ex: 2025
+  month: number; // 0–11
+  year: number; // ex: 2025
   onChange?: (month: number, year: number) => void;
 };
 
-export function MonthYearPicker({ month, year, onChange }: MonthYearPickerProps) {
-  
+export function MonthYearPicker({
+  month,
+  year,
+  onChange,
+}: MonthYearPickerProps) {
   const [visibleYear, setVisibleYear] = useState(year);
 
   useEffect(() => {
@@ -52,10 +55,6 @@ export function MonthYearPicker({ month, year, onChange }: MonthYearPickerProps)
 
   return (
     <>
-      <span className="text-gray-800 font-semibold text-3xl">
-        {monthName} {year}
-      </span>
-
       <div className="flex flex-col items-center ml-3">
         <button
           className="hover:text-mint-500 hover:font-bold px-3 cursor-pointer"
@@ -74,10 +73,14 @@ export function MonthYearPicker({ month, year, onChange }: MonthYearPickerProps)
 
       <Popover>
         <PopoverTrigger asChild>
-          <button className="ml-3 hover:text-mint-500 hover:font-bold cursor-pointer">
+          <button className="hover:text-mint-500 hover:font-bold cursor-pointer">
             <CalendarDays size={28} />
           </button>
         </PopoverTrigger>
+
+         <span className="text-gray-800 font-semibold text-3xl px-3">
+            {monthName} {year}
+          </span>
 
         <PopoverContent className="w-64 p-4">
           <div className="flex items-center justify-between mb-4">
@@ -100,11 +103,11 @@ export function MonthYearPicker({ month, year, onChange }: MonthYearPickerProps)
             </Button>
           </div>
 
+         
+
           <div className="grid grid-cols-3 gap-2">
             {MONTHS_ARRAY.map((m) => {
-              const isSelected =
-                m.index === month &&
-                visibleYear === year;
+              const isSelected = m.index === month && visibleYear === year;
 
               return (
                 <Button

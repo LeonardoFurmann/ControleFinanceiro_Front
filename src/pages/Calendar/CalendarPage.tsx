@@ -4,6 +4,7 @@ import { useApiRequest } from "../../hooks/useApiResquest.ts";
 import { transactionAPI } from "../../services/api.ts";
 import type { MonthData } from "../../types/MouthData.ts";
 import { MonthYearPicker } from "@/components/DatePicker/MonthYearPicker.tsx";
+import { Button } from "@/components/ui/button.tsx";
 
 type Props = {};
 
@@ -41,7 +42,7 @@ const CalendarPage = (props: Props) => {
       <div className="w-[1800px] flex flex-col items-center">
         <Header />
         <div className="w-full bg-card px-10 shadow-md rounded-b-sm my-1 flex items-center h-20">
-          <div className="flex items-center w-[40%]">
+          <div className="flex items-center flex-1">
             <MonthYearPicker
               month={month}
               year={year}
@@ -53,7 +54,7 @@ const CalendarPage = (props: Props) => {
           </div>
           <div className="bg-background h-18 w-1 mx-5"></div>
 
-          <div className="flex items-center justify-evenly w-[60%]">
+          <div className="flex items-center justify-evenly flex-2">
             <div className="flex-1 flex flex-col items-center">
               <span className="text-gray-700 font-bold text-2xl">Entradas</span>
               <span className="font-bold text-mint-500 text-2xl">
@@ -70,6 +71,10 @@ const CalendarPage = (props: Props) => {
               <span className="text-gray-700 font-bold text-2xl">Total</span>
               <span className="text-blue-500 font-bold text-2xl">{total}</span>
             </div>
+          </div>
+          <div className="bg-background h-18 w-1 mx-8"></div>
+          <div>
+            <Button className="bg-mint-700 hover:bg-mint-900 cursor-pointer">Nova Transação</Button>
           </div>
         </div>
       </div>
