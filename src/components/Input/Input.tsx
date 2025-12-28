@@ -5,7 +5,7 @@ type InputProps = {
   name: string;
   type?: string;
   className?: string;
-  value: string;
+  value: any;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   required?: boolean;
   placeholder?: string;
@@ -24,8 +24,8 @@ const Input: React.FC<InputProps> = ({
   max,
 }) => {
   return (
-    <div>
-      {label ?? (
+    <div className={`w-full ${className}`}>
+      {label && (
         <label
           htmlFor={name}
           className="block text-sm font-medium text-gray-900"
@@ -44,7 +44,7 @@ const Input: React.FC<InputProps> = ({
           autoComplete={name}
           placeholder={placeholder}
           maxLength={max}
-          className={`block w-full rounded-md bg-white-100 px-3 py-3 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-mint-500 sm:text-sm ${className}`}
+          className="w-full rounded-md bg-white-100 px-3 py-3 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-mint-500 sm:text-sm"
         />
       </div>
     </div>

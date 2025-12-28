@@ -4,7 +4,7 @@ import { useApiRequest } from "../../hooks/useApiResquest.ts";
 import { transactionAPI } from "../../services/api.ts";
 import type { MonthData } from "../../types/MouthData.ts";
 import { MonthYearPicker } from "@/components/DatePicker/MonthYearPicker.tsx";
-import { Button } from "@/components/ui/button.tsx";
+import ModalTransaction from "@/components/Modal/ModalTransaction.tsx";
 
 type Props = {};
 
@@ -74,7 +74,7 @@ const CalendarPage = (props: Props) => {
           </div>
           <div className="bg-background h-18 w-1 mx-8"></div>
           <div>
-            <Button className="bg-mint-700 hover:bg-mint-900 cursor-pointer">Nova Transação</Button>
+            <ModalTransaction />
           </div>
         </div>
       </div>

@@ -78,7 +78,7 @@ export function MonthYearPicker({
           </button>
         </PopoverTrigger>
 
-         <span className="text-gray-800 font-semibold text-3xl px-3">
+         <span className="text-gray-800 font-semibold text-2xl px-3">
             {monthName} {year}
           </span>
 
@@ -102,8 +102,6 @@ export function MonthYearPicker({
               <ChevronRight />
             </Button>
           </div>
-
-         
 
           <div className="grid grid-cols-3 gap-2">
             {MONTHS_ARRAY.map((m) => {
