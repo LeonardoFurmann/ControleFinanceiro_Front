@@ -43,3 +43,13 @@ export const transactionAPI = {
     api.get(`/transaction/month?year=${year}&month=${month}`)
 };
 
+export const categoryAPI = {
+  getAll: () =>
+    api.get(`/categories`)
+};
+
+export const paymenteMethodAPI = {
+  getAll: () =>
+    api.get(`/paymentmethods`)
+};
+

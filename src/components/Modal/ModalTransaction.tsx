@@ -9,16 +9,53 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Input from "../Input/Input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SelectInput from "../Select/SelectInput";
 import DatePickerInput from "../DatePicker/DatePickerInput";
 import { X } from "lucide-react";
+import type { Category } from "@/types/Category";
+import { categoryAPI, paymenteMethodAPI } from "@/services/api";
+import { useApiRequest } from "@/hooks/useApiResquest";
+import type { PaymentMethod } from "@/types/PaymentMethod";
 
 export default function ModalTransaction() {
+  const { execute } = useApiRequest();
+
+  const [open, setOpen] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
+
   const [amount, setAmount] = useState<number>(0);
 
+  async function getCategories() {
+    const result = await execute<Category>(() => categoryAPI.getAll());
+
+    if (result.success && result.data) {
+      const data = result.data;
+      setCategories(data);
+      console.log(data);
+    }
+  }
+
+   async function getPaymentMethods() {
+    const result = await execute<PaymentMethod>(() => paymenteMethodAPI.getAll());
+
+    if (result.success && result.data) {
+      const data = result.data;
+      setPaymentMethods(data);
+      console.log(data);
+    }
+  }
+
+  useEffect(() => {
+    if (!open) return;
+
+    getCategories();
+    getPaymentMethods();
+  }, [open]);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="bg-mint-700 hover:bg-mint-900 cursor-pointer">
           Nova Transação
@@ -66,8 +103,8 @@ export default function ModalTransaction() {
                 <SelectInput label="Tipo" values={["Entrada", "Saída"]} />
               </div>
               <div className="flex justify-between gap-3 w-full">
-                <SelectInput label="Tipo" values={["Entrada", "Saída"]} />
-                <SelectInput label="Tipo" values={["Entrada", "Saída"]} />
+                <SelectInput label="Categoria" values={categories.map((e)=> e.description)} />
+                <SelectInput label="Métodos de Pagamento" values={paymentMethods.map((e) => e.description)} />
               </div>
               <div className="w-full">
                 <Input
