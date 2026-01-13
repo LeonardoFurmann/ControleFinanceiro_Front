@@ -6,18 +6,27 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+type Item ={
+  label: string,
+  value: number
+}
+
 type SelectInputProps = {
   label?: string;
   placeholder?: string;
   className?: string;
-  values: string[];
+  itens: Item[];
+  value?: string;
+  onChange?: (value: string) => void;
 };
 
 const SelectInput = ({
   label,
   placeholder,
   className,
-  values,
+  itens,
+  value,
+  onChange,
 }: SelectInputProps) => (
   <div className={`w-full ${className}`}>
     {label && (
@@ -25,7 +34,7 @@ const SelectInput = ({
     )}
 
     <div className="mt-2">
-      <Select>
+      <Select value={value} onValueChange={onChange}>
         <SelectTrigger
           className="
             w-full
@@ -64,13 +73,13 @@ const SelectInput = ({
             shadow-md
           "
         >
-          {values.map((item) => {
+          {itens.map((item) => {
             return (
               <SelectItem
                 className="cursor-pointer rounded-sm px-3 py-2 text-sm focus:bg-mint-100 data-[state=checked]:bg-mint-200"
-                value={item}
+                value={String(item.value)}
               >
-                {item}
+                {item.label}
               </SelectItem>
             );
           })}

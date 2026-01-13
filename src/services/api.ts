@@ -45,11 +45,16 @@ export const transactionAPI = {
 
 export const categoryAPI = {
   getAll: () =>
-    api.get(`/categories`)
+    api.get(`/category`)
 };
 
 export const paymenteMethodAPI = {
   getAll: () =>
     api.get(`/paymentmethods`)
+};
+
+export const transactionTypeAPI = {
+  getAll: () =>
+    api.get(`/transactiontype`)
 };
 

@@ -14,9 +14,10 @@ import SelectInput from "../Select/SelectInput";
 import DatePickerInput from "../DatePicker/DatePickerInput";
 import { X } from "lucide-react";
 import type { Category } from "@/types/Category";
-import { categoryAPI, paymenteMethodAPI } from "@/services/api";
+import { categoryAPI, paymenteMethodAPI, transactionTypeAPI } from "@/services/api";
 import { useApiRequest } from "@/hooks/useApiResquest";
 import type { PaymentMethod } from "@/types/PaymentMethod";
+import type { TransactionType } from "@/types/TransactionType";
 
 export default function ModalTransaction() {
   const { execute } = useApiRequest();
@@ -24,8 +25,14 @@ export default function ModalTransaction() {
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
+  const [transactionTypes, setTransactionTypes] = useState<TransactionType[]>([]);
 
+  const [date, setDate] = useState<Date | undefined>();
   const [amount, setAmount] = useState<number>(0);
+  const [transactionTypeId, setTransactionTypeId] = useState<number | null>(null);
+  const [categoryId, setCategoryId] = useState<number | null>(null);
+  const [paymentMethodId, setPaymentMethodId] = useState<number | null>(null);
+  const [observation, setObservation] = useState<string>("");
 
   async function getCategories() {
     const result = await execute<Category>(() => categoryAPI.getAll());
@@ -33,17 +40,28 @@ export default function ModalTransaction() {
     if (result.success && result.data) {
       const data = result.data;
       setCategories(data);
-      console.log(data);
     }
   }
 
-   async function getPaymentMethods() {
-    const result = await execute<PaymentMethod>(() => paymenteMethodAPI.getAll());
+  async function getPaymentMethods() {
+    const result = await execute<PaymentMethod>(() =>
+      paymenteMethodAPI.getAll()
+    );
 
     if (result.success && result.data) {
       const data = result.data;
       setPaymentMethods(data);
-      console.log(data);
+    }
+  }
+
+  async function getTransactionTypes() {
+    const result = await execute<TransactionType>(() =>
+       transactionTypeAPI.getAll()
+    );
+
+    if (result.success && result.data) {
+      const data = result.data;
+      setTransactionTypes(data);
     }
   }
 
@@ -52,6 +70,7 @@ export default function ModalTransaction() {
 
     getCategories();
     getPaymentMethods();
+    getTransactionTypes();
   }, [open]);
 
   return (
@@ -100,11 +119,36 @@ export default function ModalTransaction() {
                   label="Valor"
                   value={amount}
                 />
-                <SelectInput label="Tipo" values={["Entrada", "Saída"]} />
+                <SelectInput
+                  label="Tipo"
+                  value={transactionTypeId?.toString()}
+                  onChange={(value) => setTransactionTypeId(Number(value))}
+                  itens={transactionTypes.map((t) => ({
+                    label: t.description,
+                    value: t.id,
+                  }))}
+                />
               </div>
               <div className="flex justify-between gap-3 w-full">
-                <SelectInput label="Categoria" values={categories.map((e)=> e.description)} />
-                <SelectInput label="Métodos de Pagamento" values={paymentMethods.map((e) => e.description)} />
+                <SelectInput
+                  label="Categoria"
+                  placeholder="Selecione"
+                  value={categoryId?.toString()}
+                  onChange={(value) => setCategoryId(Number(value))}
+                  itens={categories.map((c) => ({
+                    label: c.description,
+                    value: c.id,
+                  }))}
+                />
+                <SelectInput
+                  label="Métodos de Pagamento"
+                  value={paymentMethodId?.toString()}
+                  onChange={(value) => setPaymentMethodId(Number(value))}
+                  itens={paymentMethods.map((p) => ({
+                    label: p.description,
+                    value: p.id,
+                  }))}
+                />
               </div>
               <div className="w-full">
                 <Input
