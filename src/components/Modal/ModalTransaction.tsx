@@ -14,25 +14,28 @@ import SelectInput from "../Select/SelectInput";
 import DatePickerInput from "../DatePicker/DatePickerInput";
 import { X } from "lucide-react";
 import type { Category } from "@/types/Category";
-import { categoryAPI, paymenteMethodAPI, transactionTypeAPI } from "@/services/api";
+import {
+  categoryAPI,
+  paymenteMethodAPI,
+  transactionTypeAPI,
+} from "@/services/api";
 import { useApiRequest } from "@/hooks/useApiResquest";
 import type { PaymentMethod } from "@/types/PaymentMethod";
 import type { TransactionType } from "@/types/TransactionType";
+import { useTransactionForm } from "@/hooks/useTransactionForm";
+import Error from "../../components/Helper/Error";
 
 export default function ModalTransaction() {
   const { execute } = useApiRequest();
+  const form = useTransactionForm();
 
   const [open, setOpen] = useState(false);
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
-  const [transactionTypes, setTransactionTypes] = useState<TransactionType[]>([]);
-
-  const [date, setDate] = useState<Date | undefined>();
-  const [amount, setAmount] = useState<number>(0);
-  const [transactionTypeId, setTransactionTypeId] = useState<number | null>(null);
-  const [categoryId, setCategoryId] = useState<number | null>(null);
-  const [paymentMethodId, setPaymentMethodId] = useState<number | null>(null);
-  const [observation, setObservation] = useState<string>("");
+  const [transactionTypes, setTransactionTypes] = useState<TransactionType[]>(
+    [],
+  );
 
   async function getCategories() {
     const result = await execute<Category>(() => categoryAPI.getAll());
@@ -45,7 +48,7 @@ export default function ModalTransaction() {
 
   async function getPaymentMethods() {
     const result = await execute<PaymentMethod>(() =>
-      paymenteMethodAPI.getAll()
+      paymenteMethodAPI.getAll(),
     );
 
     if (result.success && result.data) {
@@ -56,7 +59,7 @@ export default function ModalTransaction() {
 
   async function getTransactionTypes() {
     const result = await execute<TransactionType>(() =>
-       transactionTypeAPI.getAll()
+      transactionTypeAPI.getAll(),
     );
 
     if (result.success && result.data) {
@@ -67,6 +70,8 @@ export default function ModalTransaction() {
 
   useEffect(() => {
     if (!open) return;
+
+    form.setError("");
 
     getCategories();
     getPaymentMethods();
@@ -111,18 +116,25 @@ export default function ModalTransaction() {
           <DialogDescription className="py-8">
             <div className="flex flex-wrap gap-3">
               <div className="flex justify-between gap-3 w-full">
-                <DatePickerInput label="Data" />
+                <DatePickerInput
+                  label="Data"
+                  value={form.date}
+                  onChange={(value) => form.setDate(value)}
+                />
                 <Input
                   name="valor"
                   type="number"
                   placeholder="Valor"
                   label="Valor"
-                  value={amount}
+                  value={form.amount}
+                  onChange={({ target }) => form.setAmount(target.value)}
+                  required
                 />
                 <SelectInput
                   label="Tipo"
-                  value={transactionTypeId?.toString()}
-                  onChange={(value) => setTransactionTypeId(Number(value))}
+                  placeholder="Selecione"
+                  value={form.transactionType?.toString()}
+                  onChange={(value) => form.setTransactionType(Number(value))}
                   itens={transactionTypes.map((t) => ({
                     label: t.description,
                     value: t.id,
@@ -133,8 +145,8 @@ export default function ModalTransaction() {
                 <SelectInput
                   label="Categoria"
                   placeholder="Selecione"
-                  value={categoryId?.toString()}
-                  onChange={(value) => setCategoryId(Number(value))}
+                  value={form.category?.toString()}
+                  onChange={(value) => form.setCategory(Number(value))}
                   itens={categories.map((c) => ({
                     label: c.description,
                     value: c.id,
@@ -142,8 +154,9 @@ export default function ModalTransaction() {
                 />
                 <SelectInput
                   label="Métodos de Pagamento"
-                  value={paymentMethodId?.toString()}
-                  onChange={(value) => setPaymentMethodId(Number(value))}
+                  placeholder="Selecione"
+                  value={form.paymentMethod?.toString()}
+                  onChange={(value) => form.setPaymentMethod(Number(value))}
                   itens={paymentMethods.map((p) => ({
                     label: p.description,
                     value: p.id,
@@ -155,11 +168,20 @@ export default function ModalTransaction() {
                   name="observacao"
                   type="text"
                   placeholder="Observação"
-                  value={amount}
+                  value={form.observation}
                   label="Observação"
+                  onChange={({ target }) => form.setObservation(target.value)}
                 />
               </div>
             </div>
+            {form.error && <Error error={form.error} />}
+            <Button
+              className="bg-mint-500 hover:bg-mint-700 cursor-pointer w-full px-3 py-3 mt-4"
+              onClick={form.submit}
+              disabled={form.loading}
+            >
+              {form.loading ? "Carregando..." : "Cadastrar Transação"}
+            </Button>
           </DialogDescription>
         </DialogHeader>
       </DialogContent>

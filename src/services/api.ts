@@ -1,4 +1,5 @@
 const API_URL = 'http://localhost:5000';
+import type { Transaction } from "@/types/Transaction";
 import { getAuthToken, clearAuthToken } from './authToken';
 
 import axios from 'axios';
@@ -40,7 +41,10 @@ export const authAPI = {
 
 export const transactionAPI = {
   month: (year: number, month: number) =>
-    api.get(`/transaction/month?year=${year}&month=${month}`)
+    api.get(`/transaction/month?year=${year}&month=${month}`),
+
+  create: (transaction: Transaction) => 
+    api.post(`/transaction`, transaction)
 };
 
 export const categoryAPI = {

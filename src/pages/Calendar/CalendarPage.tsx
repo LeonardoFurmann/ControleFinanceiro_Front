@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../../components/Header/Header.tsx";
 import { useApiRequest } from "../../hooks/useApiResquest.ts";
 import { transactionAPI } from "../../services/api.ts";
@@ -6,9 +6,8 @@ import type { MonthData } from "../../types/MouthData.ts";
 import { MonthYearPicker } from "@/components/DatePicker/MonthYearPicker.tsx";
 import ModalTransaction from "@/components/Modal/ModalTransaction.tsx";
 
-type Props = {};
 
-const CalendarPage = (props: Props) => {
+const CalendarPage = () => {
   const { execute } = useApiRequest();
 
   const today = new Date();
@@ -29,7 +28,6 @@ const CalendarPage = (props: Props) => {
       setAumoutIn(data.amountIn);
       setAumoutOut(data.amountOut);
       setTotal(data.total);
-      console.log(data);
     }
   }
 

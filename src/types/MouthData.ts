@@ -3,7 +3,7 @@ export interface MonthData {
   amountOut: number;
   total: number;
   dashboard: DashboardData;
-  transacactions: Transaction[];
+  transacactions: TransactionResponse[];
 }
 
 export interface DashboardData {
@@ -36,7 +36,7 @@ export interface MostAmountCategory {
   category: string;
 }
 
-export interface Transaction {
+export interface TransactionResponse {
   id: number;
   date: string;
   day: string;

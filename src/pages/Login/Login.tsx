@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Button from '../../components/Button/Button'
+import ButtonComponent from '../../components/Button/ButtonComponent'
 import Input from '../../components/Input/Input'
 import Error from '../../components/Helper/Error'
 import { Link } from 'react-router-dom'
@@ -7,11 +7,10 @@ import { validate } from '../../utils/validate'
 import { useAuth } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom';
 
-type Props = {}
 
-const Login = (props: Props) => {
+const Login = () => {
 
-    const { login } = useAuth();
+    const {login} = useAuth();
     const navigate = useNavigate();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -59,7 +58,7 @@ const Login = (props: Props) => {
                             <Input name='password' type='password' placeholder='Senha' max={8} value={password} onChange={({ target }) => setPassword(target.value)} />
                             {errors.password && <Error error={errors.password} />}
                             <div>
-                                <Button text='Entrar' type='submit' className='focus-visible:outline-mint-500  bg-mint-500 px-3 py-3 text-white 
+                                <ButtonComponent text='Entrar' type='submit' className='focus-visible:outline-mint-500  bg-mint-500 px-3 py-3 text-white 
                             disabled:bg-gray-300 text-md font-semibold ' />
                             </div>
                             {errors.general && <Error error={errors.general} />}
@@ -67,9 +66,9 @@ const Login = (props: Props) => {
                     </div>
                     <div className="my-6 border-t border-gray-300" />
                     <div className="mt-6">
-                        <Button text='Entrar com Google' className='justify-center gap-2 bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50'>
+                        <ButtonComponent text='Entrar com Google' className='justify-center gap-2 bg-white border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50'>
                             <img src="/google-icon.svg" alt="Google" className="h-5 w-5" />
-                        </Button>
+                        </ButtonComponent>
                     </div>
                     <p className="mt-5 mb-2 text-center text-sm text-text">
                         Ainda não tem uma conta?{' '}

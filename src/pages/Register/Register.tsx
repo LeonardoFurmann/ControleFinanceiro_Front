@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Button from '../../components/Button/Button'
+import Button from '../../components/Button/ButtonComponent.tsx'
 import Input from '../../components/Input/Input'
 import Error from '../../components/Helper/Error'
 import { validate } from '../../utils/validate'
