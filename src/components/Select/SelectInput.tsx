@@ -34,7 +34,7 @@ const SelectInput = ({
     )}
 
     <div className="mt-2">
-      <Select value={value} onValueChange={onChange}>
+      <Select key={value ?? "empty"} value={value} onValueChange={onChange}>
         <SelectTrigger
           className="
             w-full

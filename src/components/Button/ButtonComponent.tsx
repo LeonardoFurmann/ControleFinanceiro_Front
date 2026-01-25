@@ -1,6 +1,6 @@
 import React from "react";
 
-type ButtonProps = {
+type ButtonButtonComponentProps = {
   text: string;
   onClick?: () => void;
   disabled?: boolean;
@@ -9,7 +9,7 @@ type ButtonProps = {
   children?: any;
 };
 
-const Button: React.FC<ButtonProps> = ({
+const ButtonComponent: React.FC<ButtonButtonComponentProps> = ({
   text,
   onClick,
   disabled = false,
@@ -37,4 +37,4 @@ const Button: React.FC<ButtonProps> = ({
   );
 };
 
-export default Button;
+export default ButtonComponent;

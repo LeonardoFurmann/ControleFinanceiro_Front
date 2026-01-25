@@ -1,4 +1,3 @@
-import * as React from "react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -15,14 +14,17 @@ type DatePickerInputProps = {
   label?: string;
   className?: string;
   placeholder?: string;
+  value: Date | undefined;
+  onChange?: (e: Date | undefined) => void;
 };
 
 const DatePickerInput = ({
   label,
   className,
   placeholder = "",
+  value,
+  onChange
 }: DatePickerInputProps) => {
-  const [date, setDate] = React.useState<Date | undefined>();
 
   return (
     <div className={`w-full ${className}`}>
@@ -49,7 +51,6 @@ const DatePickerInput = ({
                 py-5
                 text-sm
                 text-gray-900
-                outline
                 outline-1
                 outline-gray-300
                 focus:outline-2
@@ -58,9 +59,9 @@ const DatePickerInput = ({
                 cursor-pointer
               "
             >
-              <span className={date ? "text-gray-900" : "text-gray-400"}>
-                {date
-                  ? format(date, "dd/MM/yyyy", { locale: ptBR })
+              <span className={value ? "text-gray-900" : "text-gray-400"}>
+                {value
+                  ? format(value, "dd/MM/yyyy", { locale: ptBR })
                   : placeholder}
               </span>
 
@@ -84,8 +85,8 @@ const DatePickerInput = ({
           >
             <Calendar
               mode="single"
-              selected={date}
-              onSelect={setDate}
+              selected={value}
+              onSelect={onChange}
               initialFocus
             />
           </PopoverContent>
