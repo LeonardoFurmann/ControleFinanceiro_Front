@@ -25,17 +25,26 @@ import type { TransactionType } from "@/types/TransactionType";
 import { useTransactionForm } from "@/hooks/useTransactionForm";
 import Error from "../../components/Helper/Error";
 
-export default function ModalTransaction() {
+type ModalTransactionProps = { 
+    open: boolean,
+    setOpen: (value: boolean) => void;
+    onSuccess: () => void;
+}
+
+const ModalTransaction = ({open, setOpen, onSuccess}: ModalTransactionProps) => {
+
   const { execute } = useApiRequest();
   const form = useTransactionForm();
-
-  const [open, setOpen] = useState(false);
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
   const [transactionTypes, setTransactionTypes] = useState<TransactionType[]>(
     [],
   );
+
+  if (form.success) {
+     onSuccess();
+  }
 
   async function getCategories() {
     const result = await execute<Category>(() => categoryAPI.getAll());
@@ -188,3 +197,5 @@ export default function ModalTransaction() {
     </Dialog>
   );
 }
+
+export default ModalTransaction

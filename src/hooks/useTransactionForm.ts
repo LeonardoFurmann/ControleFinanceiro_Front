@@ -6,6 +6,7 @@ import { transactionAPI } from "../services/api";
 export function useTransactionForm() {
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSucess] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
 
   const [date, setDate] = useState<Date | undefined>();
@@ -20,6 +21,7 @@ export function useTransactionForm() {
   async function submit() {
 
     setError("");
+    setSucess(false);
 
     if (!date || !amount || !transactionType || !category || !paymentMethod) {
       setError("Campos obrigatórios não preenchidos");
@@ -46,6 +48,7 @@ export function useTransactionForm() {
       setError(result.message);
     }
 
+    setSucess(true);
     reset();
   }
 
@@ -66,6 +69,7 @@ export function useTransactionForm() {
     category,
     paymentMethod,
     observation,
+    success,
     loading,
     error,
     setDate,

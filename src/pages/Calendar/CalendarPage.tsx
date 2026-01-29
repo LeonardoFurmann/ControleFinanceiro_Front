@@ -18,6 +18,8 @@ const CalendarPage = () => {
   const [amountOut, setAumoutOut] = useState(0);
   const [total, setTotal] = useState(0);
 
+  const [open, setOpen] = useState(false);
+
   async function getMouthData() {
     const result = await execute<MonthData>(() =>
       transactionAPI.month(year, month + 1)
@@ -34,6 +36,11 @@ const CalendarPage = () => {
   useEffect(() => {
     getMouthData();
   }, [month, year]);
+
+  function handleTransactionSucess(): void {
+      setOpen(false);
+      getMouthData();
+  }
 
   return (
     <section className="h-screen bg-background flex justify-center">
@@ -72,7 +79,11 @@ const CalendarPage = () => {
           </div>
           <div className="bg-background h-18 w-1 mx-8"></div>
           <div>
-            <ModalTransaction />
+            <ModalTransaction 
+                open={open}
+                setOpen={setOpen}
+                onSuccess={handleTransactionSucess}
+            />
           </div>
         </div>
       </div>
