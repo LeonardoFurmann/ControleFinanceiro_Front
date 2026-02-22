@@ -38,7 +38,7 @@ const CalendarPage = () => {
   }, [month, year]);
 
   function handleTransactionSucess(): void {
-      setOpen(false);
+      //setOpen(false);
       getMouthData();
   }
 
