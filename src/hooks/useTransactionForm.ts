@@ -40,12 +40,10 @@ export function useTransactionForm() {
     setLoading(true);
     const result = await execute(() => transactionAPI.create(transaction));
     setLoading(false);
-    
-    console.log(transaction)
-    console.log(result)
 
     if (!result.success) {
       setError(result.message);
+      return;
     }
 
     setSucess(true);
@@ -59,6 +57,10 @@ export function useTransactionForm() {
     setCategory(undefined);
     setPaymentMethod(undefined);
     setObservation("");
+  }
+
+  function clearSuccess() {
+    setSucess(false);
   }
 
 
@@ -81,6 +83,7 @@ export function useTransactionForm() {
     setError,
     submit,
     reset,
+    clearSuccess,
 
   };
 

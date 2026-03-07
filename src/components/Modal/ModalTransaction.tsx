@@ -42,10 +42,6 @@ const ModalTransaction = ({open, setOpen, onSuccess}: ModalTransactionProps) => 
     [],
   );
 
-  if (form.success) {
-     onSuccess();
-  }
-
   async function getCategories() {
     const result = await execute<Category>(() => categoryAPI.getAll());
 
@@ -80,12 +76,21 @@ const ModalTransaction = ({open, setOpen, onSuccess}: ModalTransactionProps) => 
   useEffect(() => {
     if (!open) return;
 
+    form.clearSuccess();
     form.setError("");
 
     getCategories();
     getPaymentMethods();
     getTransactionTypes();
   }, [open]);
+
+  useEffect(() => {
+    if (!form.success) return;
+
+    onSuccess();
+    setOpen(false);
+    form.clearSuccess();
+  }, [form.success, onSuccess, setOpen]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import Header from "../../components/Header/Header.tsx";
 import { useApiRequest } from "../../hooks/useApiResquest.ts";
 import { transactionAPI } from "../../services/api.ts";
-import type { MonthData } from "../../types/MouthData.ts";
+import type { MonthData, TransactionResponse } from "../../types/MouthData.ts";
 import { MonthYearPicker } from "@/components/DatePicker/MonthYearPicker.tsx";
 import ModalTransaction from "@/components/Modal/ModalTransaction.tsx";
+import TableTransactions from "@/components/Table/TableTransactions.tsx";
 
 
 const CalendarPage = () => {
@@ -17,6 +18,7 @@ const CalendarPage = () => {
   const [amountIn, setAumoutIn] = useState(0);
   const [amountOut, setAumoutOut] = useState(0);
   const [total, setTotal] = useState(0);
+  const [transactions, setTransactions] = useState<TransactionResponse[]>([]);
 
   const [open, setOpen] = useState(false);
 
@@ -30,6 +32,7 @@ const CalendarPage = () => {
       setAumoutIn(data.amountIn);
       setAumoutOut(data.amountOut);
       setTotal(data.total);
+      setTransactions(data.transactions);
     }
   }
 
@@ -86,6 +89,9 @@ const CalendarPage = () => {
             />
           </div>
         </div>
+        <section className="w-full">
+            <TableTransactions transactions={transactions}/>
+        </section>
       </div>
     </section>
   );

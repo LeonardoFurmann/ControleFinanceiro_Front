@@ -57,7 +57,6 @@ const DatePickerInput = ({
               mode="single"
               selected={value}
               onSelect={onChange}
-              initialFocus
             />
           </PopoverContent>
         </Popover>
