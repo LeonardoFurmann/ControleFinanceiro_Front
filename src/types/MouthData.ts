@@ -44,4 +44,5 @@ export interface TransactionResponse {
   transactionType: number;
   category: string;
   paymentMethod: string;
+  observation: string;
 }
