@@ -2,11 +2,16 @@ import { useEffect, useState } from "react";
 import Header from "../../components/Header/Header.tsx";
 import { useApiRequest } from "../../hooks/useApiResquest.ts";
 import { transactionAPI } from "../../services/api.ts";
-import type { MonthData, TransactionResponse } from "../../types/MouthData.ts";
+import type {
+  AmountByCategory,
+  AmountByPaymentMethod,
+  MonthData,
+  TransactionResponse,
+} from "../../types/MouthData.ts";
 import { MonthYearPicker } from "@/components/DatePicker/MonthYearPicker.tsx";
 import ModalTransaction from "@/components/Modal/ModalTransaction.tsx";
 import TableTransactions from "@/components/Table/TableTransactions.tsx";
-
+import BarChartComponent from "@/components/Charts/BarChartComponent.tsx";
 
 const CalendarPage = () => {
   const { execute } = useApiRequest();
@@ -19,12 +24,16 @@ const CalendarPage = () => {
   const [amountOut, setAumoutOut] = useState(0);
   const [total, setTotal] = useState(0);
   const [transactions, setTransactions] = useState<TransactionResponse[]>([]);
+  const [amountByCategory, setAmountByCategory] = useState<AmountByCategory[]>([]);
+  const [amountByPaymentMethod, setAmountByPaymentMethod] = useState<AmountByPaymentMethod[]>([]);
 
   const [open, setOpen] = useState(false);
 
   async function getMouthData() {
+    console.log("getMouthData");
+
     const result = await execute<MonthData>(() =>
-      transactionAPI.month(year, month + 1)
+      transactionAPI.month(year, month + 1),
     );
 
     if (result.success && result.data) {
@@ -33,6 +42,23 @@ const CalendarPage = () => {
       setAumoutOut(data.amountOut);
       setTotal(data.total);
       setTransactions(data.transactions);
+
+      const amountByCategory = data.dashboard.amountByCategory;
+      const amountByCategoryType2 = amountByCategory.filter(
+        (a: AmountByCategory) => {
+          return a.type == 2;
+        },
+      );
+      setAmountByCategory(amountByCategoryType2);
+
+      const amountByPaymentMethod = data.dashboard.amountByPaymentMethod;
+      console.log(data);
+      const amountByPaymentMethodType2 = amountByPaymentMethod.filter(
+        (a: AmountByPaymentMethod) => {
+          return a.type == 2;
+        },
+      );
+      setAmountByPaymentMethod(amountByPaymentMethodType2);
     }
   }
 
@@ -41,8 +67,8 @@ const CalendarPage = () => {
   }, [month, year]);
 
   function handleTransactionSucess(): void {
-      //setOpen(false);
-      getMouthData();
+    //setOpen(false);
+    getMouthData();
   }
 
   return (
@@ -82,15 +108,41 @@ const CalendarPage = () => {
           </div>
           <div className="bg-background h-18 w-1 mx-8"></div>
           <div>
-            <ModalTransaction 
-                open={open}
-                setOpen={setOpen}
-                onSuccess={handleTransactionSucess}
+            <ModalTransaction
+              open={open}
+              setOpen={setOpen}
+              onSuccess={handleTransactionSucess}
             />
           </div>
         </div>
         <section className="w-full">
-            <TableTransactions transactions={transactions}/>
+          <section>
+            <TableTransactions transactions={transactions} />
+          </section>
+          <section>
+            <div className="bg-card w-full my-4 rounded-md shadow-sm px-2 py-3">
+              <div className="flex gap-3 h-auto flex-row">
+                <div className="bg-card w-full rounded-md shadow-sm px-2 py-3 h-100">
+                  <BarChartComponent
+                    data={amountByCategory}
+                    xKey="category"
+                    bars={[{ dataKey: "amount", name: "Valor", fill: "#45BBA5" }]}
+                    formatYAxis={(v) => `R$ ${v}`}
+                    formatTooltip={(v) => `R$ ${v.toFixed(2)}`}
+                  />
+                </div>
+                <div className="bg-card w-full rounded-md shadow-sm px-2 py-3 h-100">
+                 <BarChartComponent
+                    data={amountByPaymentMethod}
+                    xKey="paymentMethod"
+                    bars={[{ dataKey: "amount", name: "Valor", fill: "#45BBA5" }]}
+                    formatYAxis={(v) => `R$ ${v}`}
+                    formatTooltip={(v) => `R$ ${v.toFixed(2)}`}
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
         </section>
       </div>
     </section>
