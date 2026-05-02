@@ -78,7 +78,7 @@ export function MonthYearPicker({
           </button>
         </PopoverTrigger>
 
-         <span className="text-gray-800 font-semibold text-2xl px-3">
+         <span className="text-foreground font-semibold text-2xl px-3">
             {monthName} {year}
           </span>
 

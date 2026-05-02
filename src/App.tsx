@@ -6,12 +6,16 @@ import Register from "./pages/Register/Register";
 import ProtectedRoute from "./components/Helper/ProtectedRoute";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Calendar from "./pages/Calendar/CalendarPage";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import ThemeToggle from "./components/Theme/ThemeToggle";
 
 function App() {
   return (
-    <div>
-      <BrowserRouter>
-        <AuthProvider>
+    <ThemeProvider>
+      <div>
+        <BrowserRouter>
+          <AuthProvider>
+            <ThemeToggle />
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -20,9 +24,10 @@ function App() {
               <Route path="/calendar" element={<Calendar />} />
             </Route>
           </Routes>
-        </AuthProvider>
-      </BrowserRouter>
-    </div>
+          </AuthProvider>
+        </BrowserRouter>
+      </div>
+    </ThemeProvider>
   );
 }
 

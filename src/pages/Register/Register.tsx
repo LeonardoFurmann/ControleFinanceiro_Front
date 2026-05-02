@@ -7,9 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useApiRequest } from "../../hooks/useApiResquest";
 import { authAPI } from '../../services/api.ts'
 
-type Props = {}
-
-const Register = (props: Props) => {
+const Register = () => {
 
     const navigate = useNavigate();
     const { execute } = useApiRequest();

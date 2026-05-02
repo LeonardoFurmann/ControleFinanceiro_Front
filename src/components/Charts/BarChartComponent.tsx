@@ -1,4 +1,3 @@
-import React from "react";
 import {
   BarChart,
   Bar,
@@ -48,7 +47,7 @@ function BarChartComponent<T extends Record<string, any>>({
     return (
       <div
         style={{ height }}
-        className="flex items-center justify-center text-sm text-gray-500 border rounded-md"
+        className="flex items-center justify-center text-sm text-muted-foreground border border-border rounded-md"
       >
         {emptyMessage}
       </div>
@@ -57,22 +56,34 @@ function BarChartComponent<T extends Record<string, any>>({
   return (
     <ResponsiveContainer width="100%" height={height}>
       <BarChart data={data}>
-        {showGrid && <CartesianGrid strokeDasharray="5 5" />}
+        {showGrid && <CartesianGrid strokeDasharray="5 5" stroke="var(--border)" />}
 
-        <XAxis dataKey={xKey as string} />
+        <XAxis dataKey={xKey as string} tick={{ fill: "var(--muted-foreground)" }} />
 
-        <YAxis tickFormatter={formatYAxis} />
+        <YAxis tickFormatter={formatYAxis} tick={{ fill: "var(--muted-foreground)" }} />
 
         <Tooltip
-          formatter={(value) =>
-            (value as number).toLocaleString("pt-BR", {
+          cursor={{ fill: "var(--foreground)", fillOpacity: 0.06 }}
+          contentStyle={{
+            backgroundColor: "var(--popover)",
+            borderColor: "var(--border)",
+            borderRadius: "8px",
+            color: "var(--foreground)",
+          }}
+          labelStyle={{ color: "var(--foreground)" }}
+          itemStyle={{ color: "var(--foreground)" }}
+          formatter={(value) => {
+            if (formatTooltip) {
+              return formatTooltip(value as number);
+            }
+            return (value as number).toLocaleString("pt-BR", {
               style: "currency",
               currency: "BRL",
-            })
-          }
+            });
+          }}
         />
 
-        {showLegend && <Legend />}
+        {showLegend && <Legend wrapperStyle={{ color: "var(--foreground)" }} />}
 
         {bars.map((bar, index) => (
           <Bar
@@ -80,6 +91,7 @@ function BarChartComponent<T extends Record<string, any>>({
             dataKey={bar.dataKey as string}
             fill={bar.fill || "#45BBA5"}
             stroke={bar.stroke || "#006B55"}
+            activeBar={{ fillOpacity: 0.85, strokeWidth: 2 }}
             name={bar.name}
           />
         ))}

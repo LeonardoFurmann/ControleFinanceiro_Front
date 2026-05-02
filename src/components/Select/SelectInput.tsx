@@ -30,7 +30,7 @@ const SelectInput = ({
 }: SelectInputProps) => (
   <div className={`w-full ${className}`}>
     {label && (
-      <label className="block text-sm font-medium text-gray-900">{label}</label>
+      <label className="block text-sm font-medium text-foreground">{label}</label>
     )}
 
     <div className="mt-2">
@@ -41,13 +41,15 @@ const SelectInput = ({
             flex
             justify-between
             rounded-md
-            bg-white-100
-            text-gray-900
+            bg-background
+            border
+            border-input
+            text-foreground
             px-3
             py-5
             text-sm
-            outline-1
-            outline-gray-300
+            transition-colors
+            hover:bg-accent/40
             focus:outline-2
             focus:-outline-offset-2
             focus:outline-mint-500
@@ -67,8 +69,8 @@ const SelectInput = ({
             overflow-y-auto
             rounded-md
             border
-            border-gray-200
-            bg-white-100
+            border-border
+            bg-popover
             p-1
             shadow-md
           "
@@ -76,7 +78,7 @@ const SelectInput = ({
           {itens.map((item) => {
             return (
               <SelectItem
-                className="cursor-pointer rounded-sm px-3 py-2 text-sm focus:bg-mint-100 data-[state=checked]:bg-mint-200"
+                className="cursor-pointer rounded-sm px-3 py-2 text-sm text-foreground focus:bg-accent focus:text-accent-foreground data-[state=checked]:bg-accent data-[state=checked]:text-accent-foreground"
                 value={String(item.value)}
               >
                 {item.label}

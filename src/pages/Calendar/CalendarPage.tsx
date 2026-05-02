@@ -90,19 +90,19 @@ const CalendarPage = () => {
 
           <div className="flex items-center justify-evenly flex-2">
             <div className="flex-1 flex flex-col items-center">
-              <span className="text-gray-700 font-bold text-2xl">Entradas</span>
+              <span className="text-foreground font-bold text-2xl">Entradas</span>
               <span className="font-bold text-mint-500 text-2xl">
                 {amountIn}
               </span>
             </div>
             <div className="flex-1 flex flex-col items-center">
-              <span className="text-gray-700 font-bold text-2xl">Saídas</span>
+              <span className="text-foreground font-bold text-2xl">Saídas</span>
               <span className="text-red-400 font-bold text-2xl">
                 {amountOut}
               </span>
             </div>
             <div className="flex-1 flex flex-col items-center">
-              <span className="text-gray-700 font-bold text-2xl">Total</span>
+              <span className="text-foreground font-bold text-2xl">Total</span>
               <span className="text-blue-500 font-bold text-2xl">{total}</span>
             </div>
           </div>

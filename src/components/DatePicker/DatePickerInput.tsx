@@ -27,7 +27,7 @@ const DatePickerInput = ({
   return (
     <div className={`w-full ${className ?? ""}`}>
       {label && (
-        <label className="block text-sm font-medium text-gray-900">{label}</label>
+        <label className="block text-sm font-medium text-foreground">{label}</label>
       )}
 
       <div className="mt-2">
@@ -35,9 +35,9 @@ const DatePickerInput = ({
           <PopoverTrigger asChild>
             <button
               type="button"
-              className="w-full flex items-center justify-between rounded-md bg-white-100 px-3 py-3 text-sm text-gray-900 outline-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-mint-500 cursor-pointer"
+              className="w-full flex items-center justify-between rounded-md border border-input bg-background px-3 py-3 text-sm text-foreground transition-colors hover:bg-accent/40 focus:outline-2 focus:-outline-offset-2 focus:outline-mint-500 cursor-pointer"
             >
-              <span className={value ? "text-gray-900" : "text-gray-400"}>
+              <span className={value ? "text-foreground" : "text-muted-foreground"}>
                 {value
                   ? format(value, "dd/MM/yyyy", { locale: ptBR })
                   : placeholder}
@@ -51,7 +51,7 @@ const DatePickerInput = ({
             align="start"
             side="bottom"
             sideOffset={4}
-            className="w-auto rounded-md border border-gray-200 bg-white p-2 shadow-md"
+            className="w-auto rounded-md border border-border bg-popover p-2 shadow-md"
           >
             <Calendar
               mode="single"

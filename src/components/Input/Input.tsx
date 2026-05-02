@@ -28,7 +28,7 @@ const Input: React.FC<InputProps> = ({
       {label && (
         <label
           htmlFor={name}
-          className="block text-sm font-medium text-gray-900"
+          className="block text-sm font-medium text-foreground"
         >
           {label}
         </label>
@@ -44,7 +44,7 @@ const Input: React.FC<InputProps> = ({
           autoComplete={name}
           placeholder={placeholder}
           maxLength={max}
-          className="w-full rounded-md bg-white-100 px-3 py-3 text-base text-gray-900 outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-mint-500 sm:text-sm"
+          className="w-full rounded-md border border-input bg-background px-3 py-3 text-base text-foreground placeholder:text-muted-foreground transition-colors hover:bg-accent/20 focus:outline-2 focus:-outline-offset-2 focus:outline-mint-500 sm:text-sm"
         />
       </div>
     </div>

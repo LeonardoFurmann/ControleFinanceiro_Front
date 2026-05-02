@@ -102,7 +102,7 @@ const ModalTransaction = ({open, setOpen, onSuccess}: ModalTransactionProps) => 
       <DialogContent
         onInteractOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
-        className="[&>button:last-child]:hidden"
+        className="bg-white dark:bg-background [&>button:last-child]:hidden"
       >
         <DialogClose asChild>
           <button
@@ -113,9 +113,9 @@ const ModalTransaction = ({open, setOpen, onSuccess}: ModalTransactionProps) => 
           rounded-md
           p-2
           cursor-pointer
-          text-gray-500
-          hover:text-gray-900
-          hover:bg-gray-100
+          text-muted-foreground
+          hover:text-foreground
+          hover:bg-accent
           transition
         "
           >

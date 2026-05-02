@@ -2,10 +2,9 @@ import {AreaChart, Area, ResponsiveContainer} from "recharts"
 
 type Props = {
    data: any;
-   dataKey: string;
 }
 
-const AreaChartComponent = ({data, dataKey}: Props) => {
+const AreaChartComponent = ({data}: Props) => {
   console.log({data})
   return (
     <ResponsiveContainer width="100%" height="100%" >
