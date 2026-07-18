@@ -3,8 +3,12 @@ import {
   type ColumnDef,
   flexRender,
   getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  type ColumnFiltersState,
   type PaginationState,
   type SortingState,
   useReactTable,
@@ -46,15 +50,20 @@ export function DataTable<TData, TValue>({
     pageIndex: 0,
     pageSize: 15,
   });
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     onPaginationChange: setPagination,
+    onColumnFiltersChange: setColumnFilters,
     initialState: {
       pagination: {
         pageSize: 15,
@@ -63,11 +72,95 @@ export function DataTable<TData, TValue>({
     state: {
       pagination,
       sorting,
+      columnFilters,
     },
   });
 
+  const transactionTypeColumn = table.getColumn("transactionType");
+  const transactionTypeFilter = transactionTypeColumn?.getFilterValue();
+  const categoryColumn = table.getColumn("category");
+  const categoryFilter = categoryColumn?.getFilterValue();
+  const paymentMethodColumn = table.getColumn("paymentMethod");
+  const paymentMethodFilter = paymentMethodColumn?.getFilterValue();
+  const getFilterOptions = (columnId: string) =>
+    Array.from(table.getColumn(columnId)?.getFacetedUniqueValues().keys() ?? [])
+      .filter((value): value is string => typeof value === "string" && value.length > 0)
+      .sort((first, second) => first.localeCompare(second, "pt-BR"));
+
+  const categoryOptions = getFilterOptions("category");
+  const paymentMethodOptions = getFilterOptions("paymentMethod");
+
   return (
     <div>
+      <div className="mb-3 flex flex-wrap items-center gap-3">
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">Tipo de transação</span>
+          <Select
+            value={transactionTypeFilter ? String(transactionTypeFilter) : "all"}
+            onValueChange={(value) => {
+              transactionTypeColumn?.setFilterValue(
+                value === "all" ? undefined : Number(value),
+              );
+              table.setPageIndex(0);
+            }}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Todos os tipos" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os tipos</SelectItem>
+              <SelectItem value="1">Entrada</SelectItem>
+              <SelectItem value="2">Saída</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">Categoria</span>
+          <Select
+            value={categoryFilter ? String(categoryFilter) : "all"}
+            onValueChange={(value) => {
+              categoryColumn?.setFilterValue(value === "all" ? undefined : value);
+              table.setPageIndex(0);
+            }}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Todas as categorias" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todas as categorias</SelectItem>
+              {categoryOptions.map((category) => (
+                <SelectItem key={category} value={category}>
+                  {category}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-muted-foreground">Método de pagamento</span>
+          <Select
+            value={paymentMethodFilter ? String(paymentMethodFilter) : "all"}
+            onValueChange={(value) => {
+              paymentMethodColumn?.setFilterValue(
+                value === "all" ? undefined : value,
+              );
+              table.setPageIndex(0);
+            }}
+          >
+            <SelectTrigger className="w-[200px]">
+              <SelectValue placeholder="Todos os métodos" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os métodos</SelectItem>
+              {paymentMethodOptions.map((paymentMethod) => (
+                <SelectItem key={paymentMethod} value={paymentMethod}>
+                  {paymentMethod}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
       <div className="overflow-hidden rounded-md border border-border bg-card p-2">
         <Table>
           <TableHeader>

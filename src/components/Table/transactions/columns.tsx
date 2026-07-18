@@ -58,15 +58,21 @@ export const columns: ColumnDef<TransactionResponse>[] = [
   {
     accessorKey: "transactionType",
     header: "Tipo",
+    filterFn: (row, columnId, filterValue) =>
+      row.getValue<number>(columnId) === Number(filterValue),
     cell: ({ row }) => getTransactionTypeLabel(row.original.transactionType),
   },
   {
     accessorKey: "category",
     header: "Categoria",
+    filterFn: (row, columnId, filterValue) =>
+      row.getValue<string>(columnId) === String(filterValue),
   },
   {
     accessorKey: "paymentMethod",
     header: "Pagamento",
+    filterFn: (row, columnId, filterValue) =>
+      row.getValue<string>(columnId) === String(filterValue),
   },
   {
     accessorKey: "observation",
