@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useApiRequest } from "./useApiResquest";
 import { transactionAPI } from "../services/api";
 
-export function useTransactionForm() {
+export function useTransactionForm(transactionId?: number) {
 
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSucess] = useState<boolean>(false);
@@ -38,7 +38,11 @@ export function useTransactionForm() {
     }
 
     setLoading(true);
-    const result = await execute(() => transactionAPI.create(transaction));
+    const result = await execute(() =>
+      transactionId
+        ? transactionAPI.update(transactionId, transaction)
+        : transactionAPI.create(transaction),
+    );
     setLoading(false);
 
     if (!result.success) {

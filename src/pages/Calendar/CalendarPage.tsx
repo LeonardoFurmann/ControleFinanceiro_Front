@@ -31,6 +31,8 @@ const CalendarPage = () => {
   const [amountOut, setAumoutOut] = useState(0);
   const [total, setTotal] = useState(0);
   const [transactions, setTransactions] = useState<TransactionResponse[]>([]);
+  const [editingTransaction, setEditingTransaction] =
+    useState<TransactionResponse | null>(null);
   const [amountByCategory, setAmountByCategory] = useState<AmountByCategory[]>([]);
   const [amountByPaymentMethod, setAmountByPaymentMethod] = useState<AmountByPaymentMethod[]>([]);
   const [categoryChartType, setCategoryChartType] = useState("all");
@@ -120,7 +122,10 @@ const CalendarPage = () => {
         </div>
         <section className="w-full">
           <section>
-            <TableTransactions transactions={transactions} />
+            <TableTransactions
+              transactions={transactions}
+              onEdit={setEditingTransaction}
+            />
           </section>
           <section>
             <div className="bg-card w-full my-4 rounded-md shadow-sm px-2 py-3">
@@ -176,6 +181,15 @@ const CalendarPage = () => {
             </div>
           </section>
         </section>
+        <ModalTransaction
+          open={Boolean(editingTransaction)}
+          setOpen={(isOpen) => {
+            if (!isOpen) setEditingTransaction(null);
+          }}
+          onSuccess={handleTransactionSucess}
+          transaction={editingTransaction ?? undefined}
+          showTrigger={false}
+        />
       </div>
     </section>
   );

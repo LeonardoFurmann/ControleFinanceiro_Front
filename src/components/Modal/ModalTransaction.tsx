@@ -24,17 +24,27 @@ import type { PaymentMethod } from "@/types/PaymentMethod";
 import type { TransactionType } from "@/types/TransactionType";
 import { useTransactionForm } from "@/hooks/useTransactionForm";
 import Error from "../../components/Helper/Error";
+import type { TransactionResponse } from "@/types/MouthData";
 
 type ModalTransactionProps = { 
     open: boolean,
     setOpen: (value: boolean) => void;
     onSuccess: () => void;
+    transaction?: TransactionResponse;
+    showTrigger?: boolean;
 }
 
-const ModalTransaction = ({open, setOpen, onSuccess}: ModalTransactionProps) => {
+const ModalTransaction = ({
+  open,
+  setOpen,
+  onSuccess,
+  transaction,
+  showTrigger = true,
+}: ModalTransactionProps) => {
 
   const { execute } = useApiRequest();
-  const form = useTransactionForm();
+  const form = useTransactionForm(transaction?.id);
+  const isEditing = Boolean(transaction);
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
@@ -85,6 +95,28 @@ const ModalTransaction = ({open, setOpen, onSuccess}: ModalTransactionProps) => 
   }, [open]);
 
   useEffect(() => {
+    if (!open) return;
+
+    if (!transaction) {
+      form.reset();
+      return;
+    }
+
+    form.setDate(new Date(transaction.date));
+    form.setAmount(Number(transaction.amount));
+    form.setTransactionType(transaction.transactionType);
+    form.setCategory(
+      categories.find((category) => category.description === transaction.category)?.id,
+    );
+    form.setPaymentMethod(
+      paymentMethods.find(
+        (paymentMethod) => paymentMethod.description === transaction.paymentMethod,
+      )?.id,
+    );
+    form.setObservation(transaction.observation || "");
+  }, [open, transaction, categories, paymentMethods]);
+
+  useEffect(() => {
     if (!form.success) return;
 
     onSuccess();
@@ -94,11 +126,13 @@ const ModalTransaction = ({open, setOpen, onSuccess}: ModalTransactionProps) => 
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button className="bg-mint-700 hover:bg-mint-900 cursor-pointer">
-          Nova Transação
-        </Button>
-      </DialogTrigger>
+      {showTrigger && !isEditing && (
+        <DialogTrigger asChild>
+          <Button className="bg-mint-700 hover:bg-mint-900 cursor-pointer">
+            Nova Transação
+          </Button>
+        </DialogTrigger>
+      )}
       <DialogContent
         onInteractOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
@@ -125,7 +159,7 @@ const ModalTransaction = ({open, setOpen, onSuccess}: ModalTransactionProps) => 
 
         <DialogHeader>
           <DialogTitle className="text-2xl text-center">
-            Cadastrar Transação
+            {isEditing ? "Editar Transação" : "Cadastrar Transação"}
           </DialogTitle>
           <DialogDescription className="py-8">
             <div className="flex flex-wrap gap-3">
@@ -194,7 +228,11 @@ const ModalTransaction = ({open, setOpen, onSuccess}: ModalTransactionProps) => 
               onClick={form.submit}
               disabled={form.loading}
             >
-              {form.loading ? "Carregando..." : "Cadastrar Transação"}
+              {form.loading
+                ? "Carregando..."
+                : isEditing
+                  ? "Salvar alterações"
+                  : "Cadastrar Transação"}
             </Button>
           </DialogDescription>
         </DialogHeader>

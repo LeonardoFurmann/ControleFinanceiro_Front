@@ -44,7 +44,10 @@ export const transactionAPI = {
     api.get(`/transaction/month?year=${year}&month=${month}`),
 
   create: (transaction: Transaction) => 
-    api.post(`/transaction`, transaction)
+    api.post(`/transaction`, transaction),
+
+  update: (id: number, transaction: Transaction) =>
+    api.put(`/transaction/${id}`, transaction)
 };
 
 export const categoryAPI = {

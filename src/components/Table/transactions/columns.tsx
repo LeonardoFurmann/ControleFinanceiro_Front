@@ -1,5 +1,5 @@
 import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown } from "lucide-react"
+import { ArrowUpDown, Pencil } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import type { TransactionResponse } from "@/types/MouthData"
@@ -32,7 +32,10 @@ function formatDate(date: string): string {
   return `${day}/${month}/${year}`
 }
 
-export const columns: ColumnDef<TransactionResponse>[] = [
+export function createColumns(
+  onEdit: (transaction: TransactionResponse) => void,
+): ColumnDef<TransactionResponse>[] {
+  return [
   {
     accessorKey: "id",
     header: "ID",
@@ -100,4 +103,22 @@ export const columns: ColumnDef<TransactionResponse>[] = [
       <div className="text-right">{formatAmount(row.original.amount)}</div>
     ),
   },
-]
+  {
+    id: "actions",
+    header: <div className="text-center">Ações</div>,
+    cell: ({ row }) => (
+      <div className="flex justify-center">
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          className="cursor-pointer"
+          onClick={() => onEdit(row.original)}
+          aria-label={`Editar transação ${row.original.id}`}
+        >
+          <Pencil />
+        </Button>
+      </div>
+    ),
+  },
+  ]
+}
