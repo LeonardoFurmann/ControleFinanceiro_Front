@@ -52,7 +52,16 @@ export const transactionAPI = {
 
 export const categoryAPI = {
   getAll: () =>
-    api.get(`/category`)
+    api.get(`/category`),
+
+  create: (description: string) =>
+    api.post(`/category`, { description }),
+
+  update: (id: number, description: string) =>
+    api.put(`/category/${id}`, { description }),
+
+  remove: (id: number) =>
+    api.delete(`/category/${id}`),
 };
 
 export const paymenteMethodAPI = {

@@ -105,7 +105,7 @@ export function createColumns(
   },
   {
     id: "actions",
-    header: <div className="text-center">Ações</div>,
+    header: () => <div className="text-center">Ações</div>,
     cell: ({ row }) => (
       <div className="flex justify-center">
         <Button

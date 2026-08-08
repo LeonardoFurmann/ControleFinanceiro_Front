@@ -6,6 +6,7 @@ import Register from "./pages/Register/Register";
 import ProtectedRoute from "./components/Helper/ProtectedRoute";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Calendar from "./pages/Calendar/CalendarPage";
+import Category from "./pages/Category/CategoryPage";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import ThemeToggle from "./components/Theme/ThemeToggle";
 
@@ -22,6 +23,7 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/calendar" element={<Calendar />} />
+              <Route path="/categories" element={<Category />} />
             </Route>
           </Routes>
           </AuthProvider>
