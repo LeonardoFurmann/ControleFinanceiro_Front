@@ -66,7 +66,16 @@ export const categoryAPI = {
 
 export const paymenteMethodAPI = {
   getAll: () =>
-    api.get(`/paymentmethods`)
+    api.get(`/paymentmethods`),
+
+  create: (description: string) =>
+    api.post(`/paymentmethods`, { description }),
+
+  update: (id: number, description: string) =>
+    api.put(`/paymentmethods/${id}`, { description }),
+
+  remove: (id: number) =>
+    api.delete(`/paymentmethods/${id}`),
 };
 
 export const transactionTypeAPI = {

@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/Helper/ProtectedRoute";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Calendar from "./pages/Calendar/CalendarPage";
 import Category from "./pages/Category/CategoryPage";
+import PaymentMethod from "./pages/PaymentMethod/PaymentMethodPage";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import ThemeToggle from "./components/Theme/ThemeToggle";
 
@@ -24,6 +25,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/categories" element={<Category />} />
+              <Route path="/payment-methods" element={<PaymentMethod />} />
             </Route>
           </Routes>
           </AuthProvider>
