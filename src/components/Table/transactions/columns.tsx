@@ -3,6 +3,8 @@ import { ArrowUpDown, Pencil } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import type { TransactionResponse } from "@/types/MouthData"
+import { formatCurrency } from "@/utils/currency"
+import { parseApiDate } from "@/utils/date"
 
 function getTransactionTypeLabel(type: number): string {
   if (type === 1) return "Entrada"
@@ -10,20 +12,8 @@ function getTransactionTypeLabel(type: number): string {
   return `Tipo ${type}`
 }
 
-function parseAmount(amount: string): number {
-  const value = Number(amount)
-  return Number.isNaN(value) ? 0 : value
-}
-
-function formatAmount(amount: string): string {
-  return new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(parseAmount(amount))
-}
-
 function formatDate(date: string): string {
-  const parsedDate = new Date(date)
+  const parsedDate = parseApiDate(date)
 
   const day = String(parsedDate.getDate()).padStart(2, "0")
   const month = String(parsedDate.getMonth() + 1).padStart(2, "0")
@@ -98,9 +88,9 @@ export function createColumns(
       </div>
     ),
     sortingFn: (rowA, rowB) =>
-      parseAmount(rowA.original.amount) - parseAmount(rowB.original.amount),
+      rowA.original.amount - rowB.original.amount,
     cell: ({ row }) => (
-      <div className="text-right">{formatAmount(row.original.amount)}</div>
+      <div className="text-right">{formatCurrency(row.original.amount)}</div>
     ),
   },
   {

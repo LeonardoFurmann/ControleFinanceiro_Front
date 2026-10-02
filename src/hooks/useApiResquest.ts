@@ -1,5 +1,5 @@
-import { AxiosError } from "axios";
 import { useCallback } from "react";
+import { getApiErrorMessage } from "../services/apiError";
 
 export type RequestResult =
   | { success: true; data?: any }
@@ -11,10 +11,9 @@ export function useApiRequest() {
       const { data } = await apiCall();
       return { success: true, data };
     } catch (error) {
-      const err = error as AxiosError<{ error?: string }>;
       return {
         success: false,
-        message: err.response?.data?.error || "Erro inesperado. Tente novamente.",
+        message: getApiErrorMessage(error, "Erro inesperado. Tente novamente."),
       };
     }
   }, []);

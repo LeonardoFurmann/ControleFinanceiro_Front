@@ -1,8 +1,12 @@
-const API_URL = 'http://localhost:5000';
+
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8080/api';
 import type { Transaction } from "@/types/Transaction";
 import { getAuthToken, clearAuthToken } from './authToken';
 
 import axios from 'axios';
+
+// Nessas rotas, 401 significa credencial errada, e não sessão expirada
+const AUTH_ROUTES = ['/auth/login', '/auth/register'];
 
 const api = axios.create({
   baseURL: API_URL,
@@ -23,7 +27,8 @@ api.interceptors.request.use(config => {
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const isAuthRoute = AUTH_ROUTES.includes(error.config?.url);
+    if (error.response?.status === 401 && !isAuthRoute) {
       clearAuthToken();
       window.location.href = '/';
     }
@@ -33,53 +38,52 @@ api.interceptors.response.use(
 
 export const authAPI = {
   login: (email: string, password: string) =>
-    api.post('/login', { email, password }),
+    api.post('/auth/login', { email, password }),
 
   register: (data: { name: string; email: string; password: string; }) =>
-    api.post('/register', data),
+    api.post('/auth/register', data),
 };
 
 export const transactionAPI = {
   month: (year: number, month: number) =>
-    api.get(`/transaction/month?year=${year}&month=${month}`),
+    api.get(`/transactions/month?year=${year}&month=${month}`),
 
-  create: (transaction: Transaction) => 
-    api.post(`/transaction`, transaction),
+  create: (transaction: Transaction) =>
+    api.post(`/transactions`, transaction),
 
   update: (id: number, transaction: Transaction) =>
-    api.put(`/transaction/${id}`, transaction)
+    api.put(`/transactions/${id}`, transaction)
 };
 
 export const categoryAPI = {
   getAll: () =>
-    api.get(`/category`),
+    api.get(`/categories`),
 
   create: (description: string) =>
-    api.post(`/category`, { description }),
+    api.post(`/categories`, { description }),
 
   update: (id: number, description: string) =>
-    api.put(`/category/${id}`, { description }),
+    api.put(`/categories/${id}`, { description }),
 
   remove: (id: number) =>
-    api.delete(`/category/${id}`),
+    api.delete(`/categories/${id}`),
 };
 
 export const paymenteMethodAPI = {
   getAll: () =>
-    api.get(`/paymentmethods`),
+    api.get(`/payment-methods`),
 
   create: (description: string) =>
-    api.post(`/paymentmethods`, { description }),
+    api.post(`/payment-methods`, { description }),
 
   update: (id: number, description: string) =>
-    api.put(`/paymentmethods/${id}`, { description }),
+    api.put(`/payment-methods/${id}`, { description }),
 
   remove: (id: number) =>
-    api.delete(`/paymentmethods/${id}`),
+    api.delete(`/payment-methods/${id}`),
 };
 
 export const transactionTypeAPI = {
   getAll: () =>
-    api.get(`/transactiontype`)
+    api.get(`/transaction-type`)
 };
-

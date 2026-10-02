@@ -3,13 +3,13 @@ export interface MonthData {
   amountOut: number;
   total: number;
   dashboard: DashboardData;
-  transacactions: TransactionResponse[];
+  transactions: TransactionResponse[];
 }
 
 export interface DashboardData {
   amountByCategory: AmountByCategory[];
   amountByDay: AmountByDay[];
-  amountByPaymentMehod: AmountByPaymentMethod[];
+  amountByPaymentMethod: AmountByPaymentMethod[];
   mostAmountCategory: MostAmountCategory;
 }
 
@@ -20,7 +20,7 @@ export interface AmountByCategory {
 }
 
 export interface AmountByDay {
-  day: string;
+  day: number;
   amount: number;
   type: number;
 }
@@ -33,16 +33,18 @@ export interface AmountByPaymentMethod {
 
 export interface MostAmountCategory {
   amount: number;
-  category: string;
+  category: string | null;
 }
 
 export interface TransactionResponse {
   id: number;
   date: string;
-  day: string;
-  amount: string;
+  day: number;
+  amount: number;
   transactionType: number;
+  categoryId: number;
   category: string;
+  paymentMethodId: number;
   paymentMethod: string;
-  observation: string;
+  observation: string | null;
 }

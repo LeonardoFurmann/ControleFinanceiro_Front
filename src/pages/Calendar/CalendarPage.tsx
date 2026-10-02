@@ -9,6 +9,7 @@ import type {
   TransactionResponse,
 } from "../../types/MouthData.ts";
 import { MonthYearPicker } from "@/components/DatePicker/MonthYearPicker.tsx";
+import { formatCurrency } from "@/utils/currency";
 import ModalTransaction from "@/components/Modal/ModalTransaction.tsx";
 import TableTransactions from "@/components/Table/TableTransactions.tsx";
 import BarChartComponent from "@/components/Charts/BarChartComponent.tsx";
@@ -97,18 +98,18 @@ const CalendarPage = () => {
             <div className="flex-1 flex flex-col items-center">
               <span className="text-foreground font-bold text-2xl">Entradas</span>
               <span className="font-bold text-mint-500 text-2xl">
-                {amountIn}
+                {formatCurrency(amountIn)}
               </span>
             </div>
             <div className="flex-1 flex flex-col items-center">
               <span className="text-foreground font-bold text-2xl">Saídas</span>
               <span className="text-red-400 font-bold text-2xl">
-                {amountOut}
+                {formatCurrency(amountOut)}
               </span>
             </div>
             <div className="flex-1 flex flex-col items-center">
               <span className="text-foreground font-bold text-2xl">Total</span>
-              <span className="text-blue-500 font-bold text-2xl">{total}</span>
+              <span className="text-blue-500 font-bold text-2xl">{formatCurrency(total)}</span>
             </div>
           </div>
           <div className="bg-background h-18 w-1 mx-8"></div>

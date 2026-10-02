@@ -25,6 +25,7 @@ import type { TransactionType } from "@/types/TransactionType";
 import { useTransactionForm } from "@/hooks/useTransactionForm";
 import Error from "../../components/Helper/Error";
 import type { TransactionResponse } from "@/types/MouthData";
+import { parseApiDate } from "@/utils/date";
 
 type ModalTransactionProps = { 
     open: boolean,
@@ -102,19 +103,13 @@ const ModalTransaction = ({
       return;
     }
 
-    form.setDate(new Date(transaction.date));
+    form.setDate(parseApiDate(transaction.date));
     form.setAmount(Number(transaction.amount));
     form.setTransactionType(transaction.transactionType);
-    form.setCategory(
-      categories.find((category) => category.description === transaction.category)?.id,
-    );
-    form.setPaymentMethod(
-      paymentMethods.find(
-        (paymentMethod) => paymentMethod.description === transaction.paymentMethod,
-      )?.id,
-    );
+    form.setCategory(transaction.categoryId);
+    form.setPaymentMethod(transaction.paymentMethodId);
     form.setObservation(transaction.observation || "");
-  }, [open, transaction, categories, paymentMethods]);
+  }, [open, transaction]);
 
   useEffect(() => {
     if (!form.success) return;

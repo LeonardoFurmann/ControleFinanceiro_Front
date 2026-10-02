@@ -6,7 +6,7 @@ import  {
 } from "react";
 import { authAPI } from "../services/api.ts";
 import { setAuthToken,clearAuthToken} from "../services/authToken";
-import type { AxiosError } from "axios";
+import { getApiErrorMessage } from "../services/apiError";
 import { useNavigate } from 'react-router-dom';
 
 type User = {
@@ -43,11 +43,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setAuthToken(token);
       return { success: true };
     } catch (error) {
-      const err = error as AxiosError<{ error?: string }>;
       return {
         success: false,
-        message:
-          err.response?.data?.error || "Erro ao fazer login. Tente novamente.",
+        message: getApiErrorMessage(error, "Erro ao fazer login. Tente novamente."),
       };
     }
   }

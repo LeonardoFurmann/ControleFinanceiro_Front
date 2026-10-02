@@ -31,9 +31,9 @@ export function useTransactionForm(transactionId?: number) {
     const transaction: Transaction = {
       date: date.toISOString(),
       amount,
-      transactionType,
-      category,
-      paymentMethod,
+      transactionTypeId: transactionType,
+      categoryId: category,
+      paymentMethodId: paymentMethod,
       observation: observation || null,
     }
 

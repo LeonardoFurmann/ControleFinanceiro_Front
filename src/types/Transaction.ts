@@ -1,8 +1,8 @@
 export interface Transaction {
   date: string;
   amount: number;
-  transactionType: number;
-  category: number;
-  paymentMethod: number;
+  transactionTypeId: number;
+  categoryId: number;
+  paymentMethodId: number;
   observation: string | null;
 }
