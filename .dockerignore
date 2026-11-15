@@ -1,0 +1,16 @@
+# Só o necessário para o build entra no contexto.
+node_modules
+dist
+.git
+.gitignore
+.vscode
+.idea
+.agents
+*.md
+Dockerfile
+.dockerignore
+
+# Configuração local não entra na imagem: a URL da API vem do ARG do Dockerfile.
+.env
+.env.*
+*.local
