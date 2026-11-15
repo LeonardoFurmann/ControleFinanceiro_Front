@@ -6,11 +6,12 @@ import { VitePWA, type VitePWAOptions } from 'vite-plugin-pwa'
 
 const manifestForPlugin: Partial<VitePWAOptions> = {
   registerType: 'autoUpdate',
-  includeAssets: ['favicon.svg'],
+  includeAssets: ['favicon.ico'],
   manifest: {
-    name: 'Meu App React',
-    short_name: 'MeuApp',
-    description: 'Aplicativo React com PWA',
+    name: 'Controle Financeiro',
+    short_name: 'Financeiro',
+    description: 'Controle de finanças pessoais',
+    lang: 'pt-BR',
     theme_color: '#ffffff',
     icons: [
       {
