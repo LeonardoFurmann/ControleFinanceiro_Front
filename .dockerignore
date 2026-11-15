@@ -11,6 +11,6 @@ Dockerfile
 .dockerignore
 
 # Configuração local não entra na imagem: a URL da API vem do ARG do Dockerfile.
-.env
-.env.*
-*.local
+**/.env
+**/.env.*
+**/*.local
